@@ -1,0 +1,36 @@
+[project]
+name = "my-project"
+version = "0.1.0"
+requires-python = ">=3.13"
+
+dependencies = [
+    "mlflow",
+    "hydra-core",
+    "torch",
+    "torchvision",
+    "scikit-learn",
+    "jupyterlab",
+    "opencv-python",
+    "captum",
+    "protobuf",
+]
+
+[tool.uv]
+package = false
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+default = true
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu128"
+
+[tool.uv.sources]
+torch = { index = "pytorch" }
+torchvision = { index = "pytorch" }
