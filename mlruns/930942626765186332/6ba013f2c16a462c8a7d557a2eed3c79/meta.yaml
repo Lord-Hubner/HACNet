@@ -1,0 +1,14 @@
+artifact_uri: file:///home/lord_hubner/Desktop/TCC/Converters_Analysis/HACNet/mlruns/930942626765186332/6ba013f2c16a462c8a7d557a2eed3c79/artifacts
+end_time: 1780706323264
+entry_point_name: ''
+experiment_id: '930942626765186332'
+lifecycle_stage: active
+run_id: 6ba013f2c16a462c8a7d557a2eed3c79
+run_name: nimble-flea-415
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1780706252965
+status: 3
+tags: []
+user_id: unknown

@@ -14,7 +14,7 @@ max_iteration_retrain: 1000 #2000
 # Our model info
 actor_type: HACNet
 critic_type: ResNet18
-use_template: False
+use_template: True
 name_template: alphabet # if use_template is True
 reg_coef: 10.0
 t_start: 10

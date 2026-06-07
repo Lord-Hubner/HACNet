@@ -18,7 +18,7 @@ from torch.utils.data import TensorDataset, DataLoader
 
 class DataManager:
     def __init__(self, cfg, path,):
-        self.root = str(path.parent.absolute())
+        self.root = str(path.absolute())
         self.name = cfg.dataset
         self.template = cfg.name_template
         self.seed = cfg.seed

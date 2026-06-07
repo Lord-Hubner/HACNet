@@ -1,0 +1,14 @@
+artifact_uri: file:///home/lord_hubner/Desktop/TCC/Converters_Analysis/HACNet/mlruns/930942626765186332/d37672be523d47cd8d933f34c57ddaf8/artifacts
+end_time: 1780706111956
+entry_point_name: ''
+experiment_id: '930942626765186332'
+lifecycle_stage: active
+run_id: d37672be523d47cd8d933f34c57ddaf8
+run_name: rogue-mule-844
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1780706041560
+status: 3
+tags: []
+user_id: unknown

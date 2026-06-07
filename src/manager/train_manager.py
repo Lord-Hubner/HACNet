@@ -52,6 +52,7 @@ class Trainer:
 
             epoch += 1
             if epoch % (max_epoch//5) == 0:
+                print(f"Current epoch: {epoch}")
                 self._save_img(tmp, label, epoch)
 
             temp_flag = self.model.actor.attention.temperature < 1.0
