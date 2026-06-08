@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/ana_hub/Documents/HACNet/mlruns/123446778490524383/fa4a75489eaa4ed095243c433d1134f3/artifacts
+end_time: 1780928888607
+entry_point_name: ''
+experiment_id: '123446778490524383'
+lifecycle_stage: active
+run_id: fa4a75489eaa4ed095243c433d1134f3
+run_name: loud-sponge-12
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1780924920243
+status: 3
+tags: []
+user_id: unknown
