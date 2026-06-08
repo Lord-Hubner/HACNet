@@ -12,7 +12,7 @@ max_iteration: 8000 #8000
 max_iteration_retrain: 2000 #2000
 
 # Our model info
-actor_type: HACNet
+actor_type: HACNet 
 critic_type: ResNet18
 use_template: True
 name_template: alphabet # if use_template is True

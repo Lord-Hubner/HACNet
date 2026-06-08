@@ -156,8 +156,8 @@ def dataset_suffix(dataset_dir: Path) -> str:
 
 def dataset_files(dataset_dir: Path) -> Tuple[Path, Path, Path]:
     suffix = dataset_suffix(dataset_dir)
-    data_path = dataset_dir / f"data_{suffix}"
-    label_path = dataset_dir / f"label_{suffix}"
+    data_path = dataset_dir / f"data.csv"
+    label_path = dataset_dir / f"label.csv"
     folds_path = dataset_dir / "fold_assignments.csv"
 
     for path in (data_path, label_path, folds_path):
