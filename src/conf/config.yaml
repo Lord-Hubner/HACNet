@@ -1,10 +1,10 @@
 # general info
 seed: 2022
-device: "cuda:0"
+device: "mps"
 verbose: True
 
 # experiment info
-dataset: TCGA-LUAD #TCGA, relathe, isolet, madelon, ringnorm, 
+dataset: TCGA-PRAD #TCGA, relathe, isolet, madelon, ringnorm,
 n_splits: 5
 batch_size: 256
 val_size: 0.2

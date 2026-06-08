@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/ana_hub/Documents/HACNet/mlruns/123446778490524383/71048e921fe04c4dbc26aebeddf8421c/artifacts
+end_time: 1780924920227
+entry_point_name: ''
+experiment_id: '123446778490524383'
+lifecycle_stage: active
+run_id: 71048e921fe04c4dbc26aebeddf8421c
+run_name: powerful-shad-649
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1780917510197
+status: 3
+tags: []
+user_id: unknown
