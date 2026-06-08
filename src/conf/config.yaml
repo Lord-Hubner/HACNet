@@ -4,7 +4,7 @@ device: "cuda:0"
 verbose: True
 
 # experiment info
-dataset: TCGA-KIRC #TCGA, relathe, isolet, madelon, ringnorm, 
+dataset: TCGA-LUAD #TCGA, relathe, isolet, madelon, ringnorm, 
 n_splits: 5
 batch_size: 256
 val_size: 0.2
