@@ -56,6 +56,14 @@ class DataManager:
             X = pd.read_csv(self.root + '/datasets/isolet/data.csv', index_col=0).values
             y = pd.read_csv(self.root + '/datasets/isolet/label.csv', index_col=0).values.reshape(-1)
 
+        elif self.name.startswith('TCGA-'):
+            X = pd.read_csv(self.root + f'/datasets/{self.name}/data.csv', index_col=0).values
+            y = pd.read_csv(self.root + f'/datasets/{self.name}/label.csv', index_col=0).values.reshape(-1)
+            self.in_dim = X.shape[1]
+            self.out_dim = len(np.unique(y))
+
+            print(F"Loaded TCGA-{self.name}")
+
         else:
             print('Invalid Dataset')
             exit(1)

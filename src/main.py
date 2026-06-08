@@ -9,7 +9,10 @@ Library: Hydra, Mlflow, PyTorch
 import time
 import hydra
 import warnings
+import numpy as np
+import pandas as pd
 from datetime import timedelta
+from pathlib import Path
 from sklearn.model_selection import StratifiedKFold, train_test_split
 
 from utils import utils
@@ -18,6 +21,30 @@ from manager.data_manager import DataManager
 from manager.model_manager import ModelManager
 
 warnings.simplefilter('ignore')
+
+
+def get_cv_splits(cfg, path, X, y):
+    fold_path = Path(path) / 'datasets' / cfg.dataset / 'fold_assignments.csv'
+    if not fold_path.exists():
+        cv = StratifiedKFold(n_splits=cfg.n_splits)
+        yield from enumerate(cv.split(X, y))
+        return
+
+    folds = pd.read_csv(fold_path)
+    if not {'sample_idx', 'fold'}.issubset(folds.columns):
+        raise ValueError(f'{fold_path} must contain sample_idx and fold columns.')
+
+    if folds['sample_idx'].duplicated().any():
+        raise ValueError(f'{fold_path} contains duplicated sample_idx values.')
+
+    if folds['sample_idx'].max() >= len(X) or folds['sample_idx'].min() < 0:
+        raise ValueError(f'{fold_path} contains sample_idx values outside the dataset range.')
+
+    all_idx = np.arange(len(X))
+    for fold in sorted(folds['fold'].unique()):
+        test_idx = folds.loc[folds['fold'] == fold, 'sample_idx'].to_numpy(dtype=int)
+        train_idx = np.setdiff1d(all_idx, test_idx, assume_unique=False)
+        yield int(fold), (train_idx, test_idx)
 
 
 @hydra.main(config_path="conf", config_name="config")
@@ -30,8 +57,7 @@ def main(cfg):
     X, y = data_manager.get_data()
     in_dim, out_dim = data_manager.get_info()
 
-    cv = StratifiedKFold(n_splits=cfg.n_splits)
-    for trial, (train_idx, test_idx) in enumerate(cv.split(X, y)):
+    for trial, (train_idx, test_idx) in get_cv_splits(cfg, path, X, y):
         # create mlflow run
         arti_path = utils.make_run(trial, cfg, writer)
 

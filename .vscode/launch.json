@@ -10,6 +10,14 @@
             "request": "launch",
             "program": "./src/main.py",
             "console": "integratedTerminal"
-        }
+        },
+        {
+            "name": "Python: Debug export images",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "$./src/export_images.py",
+            "console": "integratedTerminal",
+            "args": ["--dataset", "TCGA-PRAD"]
+        }   
     ]
 }
