@@ -1,0 +1,14 @@
+artifact_uri: file:///home/lord_hubner/Desktop/TCC/Converters_Analysis/HACNet/mlruns/150458097244158825/9040e7386f264a38a701f38039006a40/artifacts
+end_time: 1781253297108
+entry_point_name: ''
+experiment_id: '150458097244158825'
+lifecycle_stage: active
+run_id: 9040e7386f264a38a701f38039006a40
+run_name: loud-sponge-12
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1781251594823
+status: 3
+tags: []
+user_id: unknown

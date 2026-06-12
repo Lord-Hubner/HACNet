@@ -1,6 +1,6 @@
 # general info
 seed: 2022
-device: "mps"
+device: "cuda:0"
 verbose: True
 
 # experiment info

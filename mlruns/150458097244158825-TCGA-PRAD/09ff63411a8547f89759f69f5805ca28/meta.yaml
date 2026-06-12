@@ -1,0 +1,14 @@
+artifact_uri: file:///home/lord_hubner/Desktop/TCC/Converters_Analysis/HACNet/mlruns/150458097244158825/09ff63411a8547f89759f69f5805ca28/artifacts
+end_time: 1781246479701
+entry_point_name: ''
+experiment_id: '150458097244158825'
+lifecycle_stage: active
+run_id: 09ff63411a8547f89759f69f5805ca28
+run_name: tasteful-flea-453
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1781244775864
+status: 3
+tags: []
+user_id: unknown

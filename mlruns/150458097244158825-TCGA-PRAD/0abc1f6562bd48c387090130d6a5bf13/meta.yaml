@@ -1,0 +1,14 @@
+artifact_uri: file:///home/lord_hubner/Desktop/TCC/Converters_Analysis/HACNet/mlruns/150458097244158825/0abc1f6562bd48c387090130d6a5bf13/artifacts
+end_time: 1781249887842
+entry_point_name: ''
+experiment_id: '150458097244158825'
+lifecycle_stage: active
+run_id: 0abc1f6562bd48c387090130d6a5bf13
+run_name: spiffy-snake-708
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1781248184037
+status: 3
+tags: []
+user_id: unknown

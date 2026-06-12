@@ -27,23 +27,29 @@ def get_cv_splits(cfg, path, X, y):
     fold_path = Path(path) / 'datasets' / cfg.dataset / 'fold_assignments.csv'
     if not fold_path.exists():
         cv = StratifiedKFold(n_splits=cfg.n_splits)
-        yield from enumerate(cv.split(X, y))
+        yield from enumerate(cv.split(X, y), start=1)
         return
 
     folds = pd.read_csv(fold_path)
     if not {'sample_idx', 'fold'}.issubset(folds.columns):
         raise ValueError(f'{fold_path} must contain sample_idx and fold columns.')
 
-    if folds['sample_idx'].duplicated().any():
-        raise ValueError(f'{fold_path} contains duplicated sample_idx values.')
-
     if folds['sample_idx'].max() >= len(X) or folds['sample_idx'].min() < 0:
         raise ValueError(f'{fold_path} contains sample_idx values outside the dataset range.')
 
+    min_fold = int(folds['fold'].min())
+    if min_fold < 1:
+        raise ValueError(f'{fold_path} fold numbers must start at 1; found fold {min_fold}.')
+
+    duplicate_assignments = folds.duplicated(subset=['sample_idx', 'fold'])
+    if duplicate_assignments.any():
+        duplicates = folds.loc[duplicate_assignments, ['sample_idx', 'fold']].head().to_dict('records')
+        raise ValueError(f'{fold_path} contains duplicated fold assignments, examples: {duplicates}.')
+
     all_idx = np.arange(len(X))
     for fold in sorted(folds['fold'].unique()):
-        test_idx = folds.loc[folds['fold'] == fold, 'sample_idx'].to_numpy(dtype=int)
-        train_idx = np.setdiff1d(all_idx, test_idx, assume_unique=False)
+        train_idx = folds.loc[folds['fold'] == fold, 'sample_idx'].to_numpy(dtype=int)
+        test_idx = np.setdiff1d(all_idx, train_idx, assume_unique=False)
         yield int(fold), (train_idx, test_idx)
 
 
