@@ -1,5 +1,5 @@
 """
-Export HACNet-generated images for every row in the TCGA datasets.
+Export HACNet-generated images for every fold-assigned training row in the TCGA datasets.
 
 The script expects each dataset directory to contain:
 
@@ -195,9 +195,16 @@ def load_dataset(dataset_dir: Path) -> Tuple[pd.DataFrame, pd.Series, pd.DataFra
             f"{folds_path}: sample_idx {max_idx} is outside dataset size {len(data)}"
         )
 
-    if folds["sample_idx"].duplicated().any():
-        duplicates = folds.loc[folds["sample_idx"].duplicated(), "sample_idx"].head().tolist()
-        raise ValueError(f"{folds_path}: duplicated sample_idx values, examples: {duplicates}")
+    min_fold = int(folds["fold"].min())
+    if min_fold < 1:
+        raise ValueError(
+            f"{folds_path}: fold numbers must start at 1; found fold {min_fold}"
+        )
+
+    duplicate_assignments = folds.duplicated(subset=["sample_idx", "fold"])
+    if duplicate_assignments.any():
+        duplicates = folds.loc[duplicate_assignments, ["sample_idx", "fold"]].head().to_dict("records")
+        raise ValueError(f"{folds_path}: duplicated fold assignments, examples: {duplicates}")
 
     return data, labels, folds
 
@@ -299,10 +306,10 @@ def image_to_uint8(image: torch.Tensor) -> np.ndarray:
     return (array * 255).round().astype(np.uint8)
 
 
-def iter_batches(indices: Iterable[int], batch_size: int) -> Iterable[List[int]]:
+def iter_batches(items: Iterable[object], batch_size: int) -> Iterable[List[object]]:
     batch = []
-    for index in indices:
-        batch.append(int(index))
+    for item in items:
+        batch.append(item)
         if len(batch) == batch_size:
             yield batch
             batch = []
@@ -341,22 +348,26 @@ def export_dataset(
     metadata_path = dataset_output / "metadata.csv"
     dataset_output.mkdir(parents=True, exist_ok=True)
 
-    fold_by_idx = {
-        int(row.sample_idx): int(row.fold)
-        for row in folds[["sample_idx", "fold"]].itertuples(index=False)
-    }
-    ordered_indices = sorted(fold_by_idx)
-    if args.limit is not None:
-        ordered_indices = ordered_indices[: args.limit]
+    assignments = folds[["sample_idx", "fold"]].copy()
+    assignments["sample_idx"] = assignments["sample_idx"].astype(int)
+    assignments["fold"] = assignments["fold"].astype(int)
+    assignments = assignments.sort_values(["fold", "sample_idx"])
 
-    for batch_indices in iter_batches(ordered_indices, args.batch_size):
+    assignment_records = [
+        (int(row.sample_idx), int(row.fold))
+        for row in assignments.itertuples(index=False)
+    ]
+    if args.limit is not None:
+        assignment_records = assignment_records[: args.limit]
+
+    for batch_records in iter_batches(assignment_records, args.batch_size):
+        batch_indices = [sample_idx for sample_idx, _ in batch_records]
         batch = torch.from_numpy(features[batch_indices]).float().to(args.device)
         with torch.inference_mode():
             pixels, _ = actor(batch)
             images = pixels.reshape(-1, image_scale, image_scale)
 
-        for offset, sample_idx in enumerate(batch_indices):
-            fold = fold_by_idx[sample_idx]
+        for offset, (sample_idx, fold) in enumerate(batch_records):
             label = labels.iloc[sample_idx]
             sample_id = str(data.index[sample_idx])
             out_path = image_path_for(
